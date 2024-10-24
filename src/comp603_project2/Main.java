@@ -13,37 +13,45 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        int boardSize;                                                          //defining varibles 
+        String boardSize;   //defining varibles 
+        int boardSizeint = 0;
         int shipCount;
         boolean player = true;
         boolean game = true;
         Scanner scan = new Scanner(System.in);                                  //creating scanner
         do {
             System.out.println("Enter Board Size between 2 - 26 or '1' to EXIT: ");                           //creates a gameboard based on user input sizes
-            boardSize = scan.nextInt();
-            if (boardSize == 1) {
+            boardSize = scan.nextLine();
+            if (boardSize.length() == 2){
+                boardSizeint = (((boardSize.charAt(0) - '0')*10) + (boardSize.charAt(1) - '0'));
+            }
+            else if (boardSize.length() == 1){
+                boardSizeint = ((boardSize.charAt(0) - '0'));
+            }
+            
+            if (boardSizeint == 1) {
                 System.exit(0);
             }
 
-        } while (boardSize < 2 || boardSize > 26);
-        shipCount = boardSize - 1;                                              //sets the amount of ships to be -1 from board size
+        } while (boardSizeint < 2 || boardSizeint > 26);
+        shipCount = boardSizeint - 1;                                              //sets the amount of ships to be -1 from board size
 
         GameBoardHome gameBoardHome = new GameBoardHome();                      //calling class functions
         GameBoardAway gameBoardAway = new GameBoardAway();
-        gameBoardHome.initializeBoard(boardSize, shipCount);
-        gameBoardHome.placeShip(boardSize, shipCount);
+        gameBoardHome.initializeBoard(boardSizeint, shipCount);
+        gameBoardHome.placeShip(boardSizeint, shipCount);
         System.out.println("BATTLESHIPS ROUND: 1" + "\n");
-        gameBoardAway.initializeBoard(boardSize, shipCount);
+        gameBoardAway.initializeBoard(boardSizeint, shipCount);
 
-        gameBoardAway.playGame(boardSize, game, shipCount);
+        gameBoardAway.playGame(boardSizeint, game, shipCount);
         player = false;
 
         while (game) {                                                           //taking turns
             if (player) {
-                gameBoardAway.playGame(boardSize, game, shipCount);
+                gameBoardAway.playGame(boardSizeint, game, shipCount);
                 player = false;
             } else if (!player) {
-                gameBoardHome.playGame(boardSize, game, shipCount);
+                gameBoardHome.playGame(boardSizeint, game, shipCount);
                 player = true;
             }
         }
