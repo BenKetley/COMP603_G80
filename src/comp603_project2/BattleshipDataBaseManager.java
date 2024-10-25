@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class BattleshipdataaseManager {
+public class BattleshipDataBaseManager {
     
     private static final String USER_NAME = "123"; //your DB username
     private static final String PASSWORD = "123"; //your DB password
@@ -20,12 +20,12 @@ public class BattleshipdataaseManager {
 
     Connection conn;
 
-    public BattleshipdataaseManager() {
+    public BattleshipDataBaseManager() {
         establishConnection();
     }
 
     public static void main(String[] args) {
-        BattleshipdataaseManager dbManager = new BattleshipdataaseManager();
+        BattleshipDataBaseManager dbManager = new BattleshipDataBaseManager();
         System.out.println(dbManager.getConnection());
     }
 

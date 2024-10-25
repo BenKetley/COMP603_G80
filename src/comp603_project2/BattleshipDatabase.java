@@ -14,12 +14,12 @@ import java.sql.Statement;
 
 public class BattleshipDatabase {
     
-    BattleshipdataaseManager dbManager;
+    BattleshipDataBaseManager dbManager;
     Connection conn;
     Statement statement;
 
     public BattleshipDatabase() {
-        dbManager = new BattleshipdataaseManager();
+        dbManager = new BattleshipDataBaseManager();
         conn = dbManager.getConnection();
         try {
             statement = conn.createStatement();
