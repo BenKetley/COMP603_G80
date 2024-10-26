@@ -21,29 +21,39 @@ public class BattleshipDatabase {
     public BattleshipDatabase() {
         dbManager = new BattleshipDataBaseManager();
         conn = dbManager.getConnection();
+        
+        if (conn == null) {
+            throw new IllegalStateException("Failed to establish database connection.");
+        }
+
         try {
             statement = conn.createStatement();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("Error creating statement: " + ex.getMessage());
         }
-
     }
 
     public static void main(String[] args) {
         BattleshipDatabase sbs = new BattleshipDatabase();
 
         try {
-            sbs.statement.addBatch("CREATE  TABLE BOOK  (ShipPlacement  INT,   HIT   VARCHAR(50),   MISS   VARCHAR(20))");
-            sbs.statement.addBatch("INSERT INTO BOOK VALUES (1, 'Slum Dog Millionaire', 'Fiction', 19.90),\n");
+            sbs.statement.addBatch("CREATE TABLE BattleShips (ShipPlacement INT, HIT VARCHAR(50), MISS VARCHAR(20))");
+            sbs.statement.addBatch("INSERT INTO BattleShips (ShipPlacement, HIT, MISS) VALUES (1, 'False', 'True')");
             sbs.statement.executeBatch();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("Batch execution error: " + ex.getMessage());
         }
         sbs.closeConnection();
     }
 
     public void closeConnection() {
-        this.dbManager.closeConnections();
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing statement: " + e.getMessage());
+            }
+        }
+        dbManager.closeConnections();
     }
-
 }
