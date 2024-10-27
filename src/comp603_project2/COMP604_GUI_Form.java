@@ -21,13 +21,16 @@ import java.util.List;
  * @author Ben
  */
 public class COMP604_GUI_Form extends javax.swing.JFrame {
+    // declaring variables
         int boardSize = 9;
         int shipCount = 10;
+        int round = 1;
+        private int undetectedShipCount =10;
         private int unplacedShipCount = 10;
         String coordinates;
         boolean game = true;
         private final Map<String, JButton> buttonMap = new HashMap<>();
-        GameBoard Home = new GameBoard(true);                      //calling class functions
+        GameBoard Home = new GameBoard(true);                     
         GameBoard Away = new GameBoard(false);
         
         
@@ -37,6 +40,7 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
      * Creates new form COMP604_GUI_Form
      */
     public COMP604_GUI_Form() {
+        // assigning buttons to map
         initComponents();
         
         buttonMap.put("A1", HomeA1);
@@ -128,11 +132,10 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
         buttonMap.put("I7", HomeI7);
         buttonMap.put("I8", HomeI8);
         buttonMap.put("I9", HomeI9);
-        
-                                                     //sets the amount of ships to be -1 from board size
+
 
         
-        
+        // Initializes the game boards
         Home.initializeBoard(boardSize, shipCount);
         Away.initializeBoard(boardSize, shipCount);
         
@@ -143,7 +146,15 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
         }
     
     public void gameUpdator() {
-        for (char col = 'A'; col <= 'I'; col++) {
+        // Updates the game in the GUI
+            round = round+1;
+            if (undetectedShipCount ==0){
+                InstructionText.setText("YOU WIN!!!");
+                
+            }
+            
+            InstructionText.setText("Round: " + round + " Ships Left: "+ undetectedShipCount);
+        for (char col = 'A'; col <= 'I'; col++) { // for loop checks and updates conditions of all grid positions
             for (int row = 1; row <= 9; row++) {
                 String coords = col + Integer.toString(row);
                 JButton button = buttonMap.get(coords);
@@ -153,7 +164,7 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
                 int rowIndex = row - 1; // Adjust for zero-based indexing
                 char cell = Home.board[rowIndex][colIndex];
 
-                if (cell == 'X') {
+                if (cell == 'X') { // formats GUI based on game state
                     button.setBackground(Color.red);
                     button.setText("X");
                 } else if (cell == '0') {
@@ -162,6 +173,7 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
                 }
             }
         }
+        
     }
         
        
@@ -170,6 +182,7 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
     
     
     public void gamePlay (String coordinates){
+        // calls the gameplaying function when button is clicked
      
             
             System.out.println("Player's turn to attack:");
@@ -219,11 +232,8 @@ private void displayGameResults() {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        label2 = new java.awt.Label();
-        label7 = new java.awt.Label();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         panel5 = new java.awt.Panel();
         panel6 = new java.awt.Panel();
         label5 = new java.awt.Label();
@@ -435,22 +445,15 @@ private void displayGameResults() {
         AwayI9 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         viewreultsbutton = new javax.swing.JButton();
+        InstructionText = new javax.swing.JTextField();
+        ExitButton = new javax.swing.JButton();
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        jPopupMenu1.setBackground(new java.awt.Color(0, 0, 102));
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
-        label2.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
-        label2.setForeground(new java.awt.Color(255, 255, 255));
-        label2.setText("BATTLE SHIPS EXTREME!");
-
-        label7.setAlignment(java.awt.Label.CENTER);
-        label7.setFont(new java.awt.Font("Dialog", 1, 32)); // NOI18N
-        label7.setForeground(new java.awt.Color(255, 255, 255));
-        label7.setMinimumSize(new java.awt.Dimension(400, 51));
-        label7.setText("BATTLE SHIPS EXTREME!");
+        jMenuItem1.setBackground(new java.awt.Color(0, 0, 102));
+        jMenuItem1.setForeground(new java.awt.Color(255, 255, 255));
+        jMenuItem1.setText("YOU WIN!!!");
+        jPopupMenu1.add(jMenuItem1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 102));
@@ -2168,17 +2171,59 @@ private void displayGameResults() {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         panel5.add(panel3, gridBagConstraints);
 
-        viewreultsbutton.setText("viewresultsbutton");
+        jPanel1.setBackground(new java.awt.Color(0, 0, 102));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1200, 38));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        viewreultsbutton.setBackground(new java.awt.Color(0, 0, 153));
+        viewreultsbutton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        viewreultsbutton.setForeground(new java.awt.Color(255, 255, 255));
+        viewreultsbutton.setText("View Results");
         viewreultsbutton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 viewreultsbuttonMouseClicked(evt);
             }
         });
-        jPanel1.add(viewreultsbutton);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel1.add(viewreultsbutton, gridBagConstraints);
+
+        InstructionText.setEditable(false);
+        InstructionText.setBackground(new java.awt.Color(0, 0, 102));
+        InstructionText.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        InstructionText.setForeground(new java.awt.Color(255, 255, 255));
+        InstructionText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: 10");
+        InstructionText.setAutoscrolls(false);
+        InstructionText.setPreferredSize(new java.awt.Dimension(730, 38));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 4;
+        jPanel1.add(InstructionText, gridBagConstraints);
+
+        ExitButton.setBackground(new java.awt.Color(255, 0, 0));
+        ExitButton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        ExitButton.setForeground(new java.awt.Color(255, 255, 255));
+        ExitButton.setText("EXIT");
+        ExitButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ExitButtonMouseClicked(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 10.0;
+        jPanel1.add(ExitButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         panel5.add(jPanel1, gridBagConstraints);
 
         getContentPane().add(panel5);
@@ -2192,19 +2237,23 @@ private void displayGameResults() {
 
     private void HomeA1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HomeA1MouseClicked
         // TODO add your handling code here:
-        coordinates = "A1";
+        coordinates = "A1"; // Assigns coordiantes from button
         int col = (coordinates.charAt(0) - 'A');
         int row = (coordinates.charAt(1) - '1');
-        char c = (Home.board[row][col]);
-        if (c != 'S'){
+        char c = (Home.board[row][col]); // checks game state at coordinates
+        if (c != 'S'){ // makes sure the coordinates are not already selected
         if (unplacedShipCount > 0){
             unplacedShipCount --;
-            System.out.println(unplacedShipCount);
-        HomeA1.setBackground(Color.green);
+            System.out.println(unplacedShipCount); // prints to system for debugging
+        HomeA1.setBackground(Color.green); // formats grid for selected ships
         HomeA1.setText("S");
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount); // changes ship count
+        }
+        if (unplacedShipCount ==0){ // if all ships are placed changes instructions.
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeA1MouseClicked
@@ -2224,6 +2273,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeB1MouseClicked
@@ -2243,8 +2296,12 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
         }
-    }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
+        }
+        }
     }//GEN-LAST:event_HomeC1MouseClicked
 
     private void HomeD1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HomeD1MouseClicked
@@ -2262,6 +2319,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeD1MouseClicked
@@ -2281,6 +2342,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeE1MouseClicked
@@ -2300,6 +2365,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeF1MouseClicked
@@ -2319,6 +2388,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeG1MouseClicked
@@ -2338,6 +2411,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeH1MouseClicked
@@ -2357,6 +2434,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeI1MouseClicked
@@ -2376,6 +2457,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeA2MouseClicked
@@ -2395,6 +2480,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeB2MouseClicked
@@ -2414,6 +2503,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeC2MouseClicked
@@ -2433,6 +2526,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeD2MouseClicked
@@ -2452,6 +2549,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeE2MouseClicked
@@ -2471,6 +2572,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeF2MouseClicked
@@ -2490,6 +2595,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeG2MouseClicked
@@ -2509,6 +2618,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeH2MouseClicked
@@ -2528,6 +2641,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeI2MouseClicked
@@ -2547,6 +2664,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeA3MouseClicked
@@ -2566,6 +2687,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeB3MouseClicked
@@ -2585,6 +2710,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeC3MouseClicked
@@ -2604,6 +2733,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+       InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeD3MouseClicked
@@ -2623,6 +2756,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeE3MouseClicked
@@ -2642,6 +2779,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeF3MouseClicked
@@ -2661,6 +2802,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeG3MouseClicked
@@ -2680,6 +2825,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeH3MouseClicked
@@ -2699,28 +2848,36 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeI3MouseClicked
 
     private void AwayA1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AwayA1MouseClicked
         // TODO add your handling code here:
-        if (unplacedShipCount == 0){
+        if (unplacedShipCount == 0){ // runs if all ships are placed only
         
-        coordinates = "A1";
-        gamePlay(coordinates);
+        coordinates = "A1"; // assigns coordinates from button
+        gamePlay(coordinates); // plays game using coordinates
         int col = (coordinates.charAt(0) - 'A');
         int row = (coordinates.charAt(1) - '1');
         char c = (Away.board[row][col]);
         String status = Character.toString(c);
         System.out.println(status);
-        AwayA1.setText(status);
+        AwayA1.setText(status); // changes board for game state
         if (c == '0'){
             AwayA1.setBackground(new Color(0,0,102));
         }
         else if (c == 'X'){
             AwayA1.setBackground(Color.RED);
+            undetectedShipCount --;
+            InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
+            
         }
+        
         gameUpdator();
         }
                
@@ -2729,7 +2886,7 @@ private void displayGameResults() {
     private void AwayB1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AwayB1MouseClicked
         // TODO add your handling code here:
         if (unplacedShipCount == 0){
-            gameUpdator();
+            //gameUpdator();
         coordinates = "B1";
         gamePlay(coordinates);
         int row = (coordinates.charAt(1) - '1');
@@ -2743,6 +2900,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2751,7 +2910,7 @@ private void displayGameResults() {
     private void AwayC1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AwayC1MouseClicked
         // TODO add your handling code here:
         if (unplacedShipCount == 0){
-            gameUpdator();
+            //gameUpdator();
         coordinates = "C1";
         gamePlay(coordinates);
         int col = (coordinates.charAt(0) - 'A');
@@ -2765,6 +2924,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2773,7 +2934,7 @@ private void displayGameResults() {
     private void AwayD1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AwayD1MouseClicked
         // TODO add your handling code here:
         if (unplacedShipCount == 0){
-            gameUpdator();
+            //gameUpdator();
         coordinates = "D1";
         gamePlay(coordinates);
         int col = (coordinates.charAt(0) - 'A');
@@ -2787,6 +2948,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2795,7 +2958,7 @@ private void displayGameResults() {
     private void AwayE1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AwayE1MouseClicked
         // TODO add your handling code here:
         if (unplacedShipCount == 0){
-            gameUpdator();
+            //gameUpdator();
         coordinates = "E1";
         gamePlay(coordinates);
         int col = (coordinates.charAt(0) - 'A');
@@ -2809,6 +2972,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2817,7 +2982,7 @@ private void displayGameResults() {
     private void AwayF1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AwayF1MouseClicked
         // TODO add your handling code here:
         if (unplacedShipCount == 0){
-            gameUpdator();
+            //gameUpdator();
         coordinates = "F1";
         gamePlay(coordinates);
         int col = (coordinates.charAt(0) - 'A');
@@ -2831,6 +2996,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2839,7 +3006,7 @@ private void displayGameResults() {
     private void AwayG1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AwayG1MouseClicked
         // TODO add your handling code here:
         if (unplacedShipCount == 0){
-            gameUpdator();
+            //gameUpdator();
         coordinates = "G1";
         gamePlay(coordinates);
         int col = (coordinates.charAt(0) - 'A');
@@ -2853,6 +3020,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2861,7 +3030,7 @@ private void displayGameResults() {
     private void AwayH1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AwayH1MouseClicked
         // TODO add your handling code here:
         if (unplacedShipCount == 0){
-            gameUpdator();
+            //gameUpdator();
         coordinates = "H1";
         gamePlay(coordinates);
         int col = (coordinates.charAt(0) - 'A');
@@ -2875,6 +3044,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2883,7 +3054,7 @@ private void displayGameResults() {
     private void AwayI1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AwayI1MouseClicked
         // TODO add your handling code here:
         if (unplacedShipCount == 0){
-            gameUpdator();
+            //gameUpdator();
         coordinates = "I1";
         gamePlay(coordinates);
         int col = (coordinates.charAt(0) - 'A');
@@ -2897,6 +3068,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2918,6 +3091,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2939,6 +3114,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2960,6 +3137,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2981,6 +3160,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3002,6 +3183,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3023,6 +3206,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3044,6 +3229,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3065,6 +3252,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3086,6 +3275,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3107,6 +3298,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3128,6 +3321,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3149,6 +3344,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3170,6 +3367,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3191,6 +3390,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3212,6 +3413,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3233,6 +3436,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3254,6 +3459,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3275,6 +3482,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3296,6 +3505,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3317,6 +3528,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3338,6 +3551,9 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
+            
         }
         gameUpdator();
         }
@@ -3359,6 +3575,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3380,6 +3598,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3401,6 +3621,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3422,6 +3644,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3443,6 +3667,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3464,6 +3690,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3485,6 +3713,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3506,6 +3736,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3527,6 +3759,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3548,6 +3782,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3569,6 +3805,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3590,6 +3828,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3611,6 +3851,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3632,6 +3874,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3653,6 +3897,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3674,6 +3920,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3695,6 +3943,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3716,6 +3966,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3737,6 +3989,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3758,6 +4012,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3779,6 +4035,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3800,6 +4058,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3821,6 +4081,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3842,6 +4104,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3863,6 +4127,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3884,6 +4150,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3905,6 +4173,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3926,6 +4196,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3947,6 +4219,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3968,6 +4242,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3989,6 +4265,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4010,6 +4288,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4031,6 +4311,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4052,6 +4334,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4073,6 +4357,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4094,6 +4380,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4115,6 +4403,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4136,6 +4426,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4157,6 +4449,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4178,6 +4472,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4199,6 +4495,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4220,6 +4518,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4241,6 +4541,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4262,6 +4564,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4283,6 +4587,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4304,6 +4610,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4325,6 +4633,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4346,6 +4656,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4367,6 +4679,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4388,6 +4702,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4409,6 +4725,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4429,7 +4747,12 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
         }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
+        }
+        
     }
     }//GEN-LAST:event_HomeA4MouseClicked
 
@@ -4448,7 +4771,13 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+ 
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
         }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
+        }
+        
     }
     }//GEN-LAST:event_HomeB4MouseClicked
 
@@ -4467,6 +4796,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeC4MouseClicked
@@ -4486,6 +4819,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeD4MouseClicked
@@ -4505,6 +4842,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeE4MouseClicked
@@ -4524,6 +4865,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeF4MouseClicked
@@ -4543,6 +4888,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeG4MouseClicked
@@ -4562,6 +4911,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeH4MouseClicked
@@ -4581,6 +4934,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeI4MouseClicked
@@ -4600,6 +4957,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeA5MouseClicked
@@ -4619,6 +4980,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeB5MouseClicked
@@ -4638,6 +5003,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeC5MouseClicked
@@ -4657,6 +5026,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeD5MouseClicked
@@ -4676,6 +5049,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeE5MouseClicked
@@ -4695,6 +5072,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeF5MouseClicked
@@ -4714,6 +5095,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeG5MouseClicked
@@ -4733,6 +5118,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeH5MouseClicked
@@ -4752,6 +5141,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeI5MouseClicked
@@ -4771,6 +5164,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeA6MouseClicked
@@ -4790,6 +5187,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeB6MouseClicked
@@ -4809,6 +5210,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeC6MouseClicked
@@ -4828,6 +5233,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeD6MouseClicked
@@ -4847,6 +5256,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeE6MouseClicked
@@ -4866,6 +5279,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeF6MouseClicked
@@ -4885,6 +5302,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeG6MouseClicked
@@ -4904,6 +5325,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeH6MouseClicked
@@ -4923,6 +5348,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeI6MouseClicked
@@ -4942,6 +5371,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeA7MouseClicked
@@ -4961,6 +5394,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeB7MouseClicked
@@ -4980,6 +5417,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeC7MouseClicked
@@ -4999,6 +5440,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeD7MouseClicked
@@ -5018,6 +5463,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeE7MouseClicked
@@ -5037,6 +5486,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeF7MouseClicked
@@ -5056,6 +5509,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeG7MouseClicked
@@ -5075,6 +5532,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeH7MouseClicked
@@ -5094,6 +5555,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeI7MouseClicked
@@ -5113,6 +5578,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeA8MouseClicked
@@ -5132,6 +5601,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeB8MouseClicked
@@ -5151,6 +5624,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeC8MouseClicked
@@ -5170,6 +5647,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeD8MouseClicked
@@ -5189,6 +5670,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeE8MouseClicked
@@ -5208,6 +5693,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeF8MouseClicked
@@ -5227,6 +5716,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeG8MouseClicked
@@ -5246,6 +5739,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeH8MouseClicked
@@ -5265,6 +5762,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeI8MouseClicked
@@ -5284,6 +5785,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeA9MouseClicked
@@ -5303,6 +5808,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeB9MouseClicked
@@ -5322,6 +5831,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeC9MouseClicked
@@ -5341,6 +5854,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeD9MouseClicked
@@ -5360,6 +5877,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeE9MouseClicked
@@ -5379,6 +5900,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeF9MouseClicked
@@ -5398,6 +5923,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeG9MouseClicked
@@ -5417,6 +5946,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeH9MouseClicked
@@ -5436,6 +5969,10 @@ private void displayGameResults() {
         //HomeA1.setBackground(Color.red);
         System.out.println(coordinates);
         Home.placeShip(boardSize, shipCount, coordinates, game);
+        InstructionText.setText("PLACE YOUR SHIPS! Ships left: " + unplacedShipCount);
+        }
+        if (unplacedShipCount ==0){
+            InstructionText.setText("Round: " + round + " ATTACK!");
         }
     }
     }//GEN-LAST:event_HomeI9MouseClicked
@@ -5443,6 +5980,11 @@ private void displayGameResults() {
     private void viewreultsbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewreultsbuttonMouseClicked
         displayGameResults();
     }//GEN-LAST:event_viewreultsbuttonMouseClicked
+
+    private void ExitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitButtonMouseClicked
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_ExitButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -5562,6 +6104,7 @@ private void displayGameResults() {
     private javax.swing.JButton AwayI7;
     private javax.swing.JButton AwayI8;
     private javax.swing.JButton AwayI9;
+    private javax.swing.JButton ExitButton;
     private javax.swing.JButton HomeA1;
     private javax.swing.JButton HomeA2;
     private javax.swing.JButton HomeA3;
@@ -5644,12 +6187,11 @@ private void displayGameResults() {
     private javax.swing.JButton HomeI7;
     private javax.swing.JButton HomeI8;
     private javax.swing.JButton HomeI9;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JTextField InstructionText;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JSeparator jSeparator1;
-    private java.awt.Label label2;
     private java.awt.Label label23;
     private java.awt.Label label24;
     private java.awt.Label label25;
@@ -5690,7 +6232,6 @@ private void displayGameResults() {
     private java.awt.Label label61;
     private java.awt.Label label62;
     private java.awt.Label label63;
-    private java.awt.Label label7;
     private java.awt.Label label8;
     private java.awt.Panel panel3;
     private java.awt.Panel panel5;
