@@ -76,21 +76,22 @@ public class BattleshipDatabase {
         }
     }
     
-    public List<String> getGameResults() {
+public List<String> getGameResults() {
     List<String> results = new ArrayList<>();
-    try (PreparedStatement stmt = conn.prepareStatement("SELECT Outcome, Timestamp");
+    String query = "SELECT Outcome FROM GameResults"; // Adjust this based on your actual table structure
+
+    try (PreparedStatement stmt = conn.prepareStatement(query);
          ResultSet rs = stmt.executeQuery()) {
-        
         while (rs.next()) {
-            String outcome = rs.getString("Outcome");
-            String timestamp = rs.getString("Timestamp");
-            results.add("Outcome: " + outcome + " at " + timestamp);
+            results.add(rs.getString("Outcome")); // Adjust based on your column name
         }
     } catch (SQLException e) {
         System.out.println("Error retrieving game results: " + e.getMessage());
     }
+    
     return results;
 }
+
 
     public void closeConnection() {
         dbManager.closeConnections();

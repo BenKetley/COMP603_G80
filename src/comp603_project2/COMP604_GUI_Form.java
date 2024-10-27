@@ -29,7 +29,8 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
         private final Map<String, JButton> buttonMap = new HashMap<>();
         GameBoard Home = new GameBoard(true);                      //calling class functions
         GameBoard Away = new GameBoard(false);
-        
+        private BattleshipDatabase battleshipDatabase;
+
         
         
 
@@ -38,7 +39,7 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
      */
     public COMP604_GUI_Form() {
         initComponents();
-        
+        battleshipDatabase = new BattleshipDatabase();
         buttonMap.put("A1", HomeA1);
         buttonMap.put("A2", HomeA2);
         buttonMap.put("A3", HomeA3);
@@ -187,26 +188,36 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
     
 
 private void displayGameResults() {
-    BattleshipDatabase database = new BattleshipDatabase();
-    List<String> results = database.getGameResults();
-    
-    // Create a new JFrame to display results
+    // Retrieve the results from the database using the instance
+    List<String> results = battleshipDatabase.getGameResults();
+
+    // Create a new window to display results
     JFrame resultsFrame = new JFrame("Game Results");
     resultsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    resultsFrame.setSize(300, 300);
-    
+    resultsFrame.setSize(400, 300);
+
+    // Create a JTextArea to display results
     JTextArea textArea = new JTextArea();
-    textArea.setEditable(false);
-    
-    // Add the results to the text area
-    for (String result : results) {
-        textArea.append(result + "\n");
+    textArea.setEditable(false); // Make it read-only
+
+    // Check if results are empty and display appropriate message
+    if (results.isEmpty()) {
+        textArea.setText("No game results found.\n");
+    } else {
+        for (String result : results) {
+            textArea.append(result + "\n");
+        }
     }
-    
-    // Add text area to frame
-    resultsFrame.add(new JScrollPane(textArea));
+
+    // Add the text area to a scroll pane
+    JScrollPane scrollPane = new JScrollPane(textArea);
+    resultsFrame.add(scrollPane);
+
+    // Make the results window visible
     resultsFrame.setVisible(true);
 }
+
+
 
 
     /**

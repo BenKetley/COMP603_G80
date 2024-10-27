@@ -5,9 +5,18 @@
         <group>
             <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/GaameLogic.java</file>
             <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/BattleshipDataBaseManager.java</file>
+<<<<<<< Updated upstream
             <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/UserInputAttack.java</file>
             <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/COMP603_Project2.java</file>
             <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/GameBoardHome.java</file>
+=======
+            <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/COMP603_Project2.java</file>
+            <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/ShipPlacement.java</file>
+            <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/ComputerAttack.java</file>
+            <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/GameBoard.java</file>
+            <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/UserInput.java</file>
+            <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/GameLogWriter.java</file>
+>>>>>>> Stashed changes
             <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/COMP604_GUI_Form.java</file>
             <file>file:/C:/Users/Rory/Documents/GitHub/COMP603_G80/src/comp603_project2/BattleshipDatabase.java</file>
         </group>
