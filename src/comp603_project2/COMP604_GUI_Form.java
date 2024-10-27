@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 
 /*
@@ -24,7 +27,6 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
         String coordinates;
         boolean game = true;
         private final Map<String, JButton> buttonMap = new HashMap<>();
-
         GameBoard Home = new GameBoard(true);                      //calling class functions
         GameBoard Away = new GameBoard(false);
         
@@ -181,9 +183,31 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
             
             game = Home.hasUndetectedShips() && Away.hasUndetectedShips();
 
-
-    
           }
+    
+
+private void displayGameResults() {
+    BattleshipDatabase database = new BattleshipDatabase();
+    List<String> results = database.getGameResults();
+    
+    // Create a new JFrame to display results
+    JFrame resultsFrame = new JFrame("Game Results");
+    resultsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    resultsFrame.setSize(300, 300);
+    
+    JTextArea textArea = new JTextArea();
+    textArea.setEditable(false);
+    
+    // Add the results to the text area
+    for (String result : results) {
+        textArea.append(result + "\n");
+    }
+    
+    // Add text area to frame
+    resultsFrame.add(new JScrollPane(textArea));
+    resultsFrame.setVisible(true);
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -409,6 +433,8 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
         AwayG9 = new javax.swing.JButton();
         AwayH9 = new javax.swing.JButton();
         AwayI9 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        viewreultsbutton = new javax.swing.JButton();
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -2136,11 +2162,24 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         panel5.add(panel3, gridBagConstraints);
+
+        viewreultsbutton.setText("viewresultsbutton");
+        viewreultsbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewreultsbuttonMouseClicked(evt);
+            }
+        });
+        jPanel1.add(viewreultsbutton);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        panel5.add(jPanel1, gridBagConstraints);
 
         getContentPane().add(panel5);
 
@@ -5401,6 +5440,10 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_HomeI9MouseClicked
 
+    private void viewreultsbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewreultsbuttonMouseClicked
+        displayGameResults();
+    }//GEN-LAST:event_viewreultsbuttonMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -5604,6 +5647,7 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private java.awt.Label label2;
     private java.awt.Label label23;
@@ -5651,5 +5695,6 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
     private java.awt.Panel panel3;
     private java.awt.Panel panel5;
     private java.awt.Panel panel6;
+    private javax.swing.JButton viewreultsbutton;
     // End of variables declaration//GEN-END:variables
 }
