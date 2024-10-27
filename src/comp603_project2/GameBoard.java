@@ -4,27 +4,23 @@
  */
 package comp603_project2;
 
-/**
- *
- * @author Ben
- */
 import java.util.Arrays;
 
 public class GameBoard {
-    public char[][] board;                                                                                            
+    public char[][] board;
     private final char water = '~';
     private final char ship = 'S';
     private final char hit = 'X';
     private final char miss = '0';
     private int undetectedShips;
-    private boolean isHome;  // Flag to distinguish between Home and Away boards
     private int roundCount = 1;
     private int unplacedShipCount = 10;
-    //private boolean game = true;
-    //private String coordinates;
+    private boolean isHome;
+    private BattleshipDatabase battleshipDatabase;
 
     public GameBoard(boolean isHome) {
         this.isHome = isHome;
+        this.battleshipDatabase = new BattleshipDatabase();  // Initialize BattleshipDatabase to handle DB operations
     }
 
     public void initializeBoard(int boardSize, int shipCount) {
@@ -36,75 +32,46 @@ public class GameBoard {
         if (isHome) {
             printBoard(boardSize, "HOME");
         } else {
-            ShipPlacement.placeShips(board, shipCount, water, ship); // Place AI ships for Away board
+            ShipPlacement.placeShips(board, shipCount, water, ship);
             printBoard(boardSize, "AWAY");
         }
     }
-    
-//    public void runGame(int boardSize){
-//        while(game){
-//            
-//            System.out.println("Player's turn to attack:");
-//            playGame(boardSize);
-//            
-//            System.out.println("Computer's turn to attack:");
-//            playGame(boardSize);
-//            
-//            //System.out.println("Place Ships");
-//            
-//            
-//            game = Home.hasUndetectedShips() && Away.hasUndetectedShips();
-//        
-//        }
-//    }
 
-    public int placeShip(int boardSize, int shipCount, String coordinates, boolean game) {
-        //int undetectedShipCount = shipCount;
-        
+    public int placeShip(int boardSize, int shipCount, String coordinates,boolean game) {
+        if (unplacedShipCount > 0) {
+            int[] guessCoordinates = UserInput.processCoordinates(coordinates);
+            char result = GaameLogic.evaluatePlacement(guessCoordinates, board, ship, water, hit, miss);
 
-        if (unplacedShipCount > 0) { 
-             //checks that unplaced ships are greatere than 0
-            
-            int[] guessCoordinates = UserInput.processCoordinates(coordinates);                                      // calls function to take users input coordinates
-            char result = GaameLogic.evaluatePlacement(guessCoordinates, board, ship, water, hit, miss);                //checks if coordinates are valid
-            if (result == ship && board[guessCoordinates[0]][guessCoordinates[1]] != ship) {                            //checks if ship has been placed before and if not reduce amount of unplaced ships
+            if (result == ship && board[guessCoordinates[0]][guessCoordinates[1]] != ship) {
                 unplacedShipCount--;
             }
             updateBoard(guessCoordinates, result);
-            System.out.println("PLACE YOUR SHIPS");
+            battleshipDatabase.logMove("place", coordinates, result);  // Log move via BattleshipDatabase
             printBoard(boardSize, "HOME");
-            if (unplacedShipCount > 0) {
-                System.out.println("Ships left: " + unplacedShipCount);
+
+            if (unplacedShipCount == 0) {
+                System.out.println("All Ships Placed!");
             }
-         else if (unplacedShipCount == 0){
-        System.out.println("All Ships Placed!");
-        System.out.println("\n" + "\n");
-        System.out.println("Game = True");
-        
         }
-            }
         return unplacedShipCount;
     }
 
     public void playGame(int boardSize, String coordinates) {
         if (undetectedShips > 0) {
-            int[] guessCoordinates = isHome ? ComputerAttack.generateShotCoordinates(boardSize) 
+            int[] guessCoordinates = isHome ? ComputerAttack.generateShotCoordinates(boardSize)
                                             : UserInput.processCoordinates(coordinates);
-            char result = isHome ? GaameLogic.evaluateComputer(guessCoordinates, board, ship, water, hit, miss, boardSize) 
+            char result = isHome ? GaameLogic.evaluateComputer(guessCoordinates, board, ship, water, hit, miss, boardSize)
                                  : GaameLogic.evaluateTarget(guessCoordinates, board, ship, water, hit, miss, roundCount++);
+
             if (result == hit && board[guessCoordinates[0]][guessCoordinates[1]] != hit) {
                 undetectedShips--;
-                System.out.println((isHome ? "Hit! Your ships left = " : "Hit! Enemy ships left = ") + undetectedShips);
             }
+            battleshipDatabase.logMove("attack", coordinates, result);  // Log attack via BattleshipDatabase
+            updateBoard(guessCoordinates, result);
+            printBoard(boardSize, isHome ? "HOME" : "AWAY");
+
             if (undetectedShips == 0) {
-                System.out.println(isHome ? "You Lose!" : "You Win!");
-                String gamelog = GameLogWriter.readGameLogFromCommandLine();
-                String fileName = GameLogWriter.writefilename();
-                GameLogWriter.saveGameLogToFile(gamelog, fileName);
-                System.exit(0);
-            } else {
-                updateBoard(guessCoordinates, result);
-                printBoard(boardSize, isHome ? "HOME" : "AWAY");
+                battleshipDatabase.logGameResult(isHome ? "lose" : "win");  // Log game result via BattleshipDatabase
             }
         }
     }
@@ -136,9 +103,7 @@ public class GameBoard {
         }
         System.out.println();
     }
-    
-    public boolean hasUndetectedShips() {
+        public boolean hasUndetectedShips() {
         return undetectedShips > 0;
 }
-
 }

@@ -1,22 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package comp603_project2;
 
-/**
- *
- * @author Rory
- */
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BattleshipDatabase {
-    
-    BattleshipDataBaseManager dbManager;
-    Connection conn;
-    Statement statement;
+    private BattleshipDataBaseManager dbManager;
+    private Connection conn;
 
     public BattleshipDatabase() {
         dbManager = new BattleshipDataBaseManager();
@@ -26,34 +20,79 @@ public class BattleshipDatabase {
             throw new IllegalStateException("Failed to establish database connection.");
         }
 
-        try {
-            statement = conn.createStatement();
-        } catch (SQLException ex) {
-            System.out.println("Error creating statement: " + ex.getMessage());
+        createTables(); // Call to create tables upon initialization
+    }
+
+    private void createTables() {
+        createActionsTable();
+        createGameResultsTable();
+    }
+
+    private void createActionsTable() {
+        try (Statement stmt = conn.createStatement()) {
+            // Create BATTLESHIPACTIONS table if it doesn't exist
+            stmt.execute("CREATE TABLE BATTLESHIPACTIONS (" +
+                    "ID," +
+                    "ActionType VARCHAR(50), " +
+                    "Coordinates VARCHAR(10), " +
+                    "Result VARCHAR(10), " +
+                    "Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
+        } catch (SQLException e) {
+            System.out.println("Error creating table BATTLESHIPACTIONS: " + e.getMessage());
         }
     }
 
-    public static void main(String[] args) {
-        BattleshipDatabase sbs = new BattleshipDatabase();
-
-        try {
-            sbs.statement.addBatch("CREATE TABLE BattleShips (ShipPlacement INT, HIT VARCHAR(50), MISS VARCHAR(20))");
-            sbs.statement.addBatch("INSERT INTO BattleShips (ShipPlacement, HIT, MISS) VALUES (1, 'False', 'True')");
-            sbs.statement.executeBatch();
-        } catch (SQLException ex) {
-            System.out.println("Batch execution error: " + ex.getMessage());
+    private void createGameResultsTable() {
+        try (Statement stmt = conn.createStatement()) {
+            // Create GAMERESULTS table if it doesn't exist
+            stmt.execute("CREATE TABLE GAMERESULTS (" +
+                    "ID, " +
+                    "Outcome VARCHAR(50), " +
+                    "Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
+        } catch (SQLException e) {
+            System.out.println("Error creating table GAMERESULTS: " + e.getMessage());
         }
-        sbs.closeConnection();
     }
+
+    public void logMove(String actionType, String coordinates, char result) {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "INSERT INTO BATTLESHIPACTIONS (ActionType, Coordinates, Result) VALUES (?, ?, ?)")) {
+            stmt.setString(1, actionType);
+            stmt.setString(2, coordinates);
+            stmt.setString(3, String.valueOf(result));
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error logging move: " + e.getMessage());
+        }
+    }
+
+    public void logGameResult(String outcome) {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "INSERT INTO GAMERESULTS (Outcome) VALUES (?)")) {
+            stmt.setString(1, outcome);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error logging game result: " + e.getMessage());
+        }
+    }
+    
+    public List<String> getGameResults() {
+    List<String> results = new ArrayList<>();
+    try (PreparedStatement stmt = conn.prepareStatement("SELECT Outcome, Timestamp");
+         ResultSet rs = stmt.executeQuery()) {
+        
+        while (rs.next()) {
+            String outcome = rs.getString("Outcome");
+            String timestamp = rs.getString("Timestamp");
+            results.add("Outcome: " + outcome + " at " + timestamp);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error retrieving game results: " + e.getMessage());
+    }
+    return results;
+}
 
     public void closeConnection() {
-        if (statement != null) {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Error closing statement: " + e.getMessage());
-            }
-        }
         dbManager.closeConnections();
     }
 }
