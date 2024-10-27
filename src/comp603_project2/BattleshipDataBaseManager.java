@@ -13,10 +13,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class BattleshipDataBaseManager {
-    
-    private static final String USER_NAME = "123"; //your DB username
-    private static final String PASSWORD = "123"; //your DB password
-    private static final String URL = "jdbc:derby:BattleShipDB; create=true";  //url of the DB host
+
+    private static final String USER_NAME = "";
+    private static final String PASSWORD = "";
+    private static final String URL = "jdbc:derby:BattleShipDB;create=true";
 
     Connection conn;
 
@@ -30,17 +30,23 @@ public class BattleshipDataBaseManager {
     }
 
     public Connection getConnection() {
+        if (conn == null) {
+            System.out.println("Connection not established.");
+        }
         return this.conn;
     }
 
-    //Establish connection
+    // Establish connection
     public void establishConnection() {
         if (this.conn == null) {
             try {
+                Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
                 conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-                System.out.println(URL + " Get Connected Successfully ....");
+                System.out.println(URL + " Connected successfully...");
             } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println("SQL Exception: " + ex.getMessage());
+            } catch (ClassNotFoundException e) {
+                System.out.println("Driver not found: " + e.getMessage());
             }
         }
     }
@@ -49,10 +55,11 @@ public class BattleshipDataBaseManager {
         if (conn != null) {
             try {
                 conn.close();
+                System.out.println("Connection closed.");
             } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println("Error closing connection: " + ex.getMessage());
             }
         }
     }
-
 }
+
