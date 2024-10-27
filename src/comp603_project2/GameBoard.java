@@ -43,7 +43,7 @@ public class GameBoard {
             char result = GaameLogic.evaluatePlacement(guessCoordinates, board, ship, water, hit, miss);
 
             if (result == ship && board[guessCoordinates[0]][guessCoordinates[1]] != ship) {
-                unplacedShipCount--;
+                unplacedShipCount--;             
             }
             updateBoard(guessCoordinates, result);
             battleshipDatabase.logMove("place", coordinates, result);  // Log move via BattleshipDatabase
