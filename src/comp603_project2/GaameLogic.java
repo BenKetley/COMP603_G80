@@ -9,6 +9,9 @@ package comp603_project2;
  * @author Rory
  */
 public class GaameLogic {
+   
+    
+ 
 
     public static char evaluateTarget(int[] coordinates, char[][] board, char ship, char water, char hit, char miss, int roundCount) {
 
@@ -69,4 +72,7 @@ public class GaameLogic {
         }
         return target;
     }
-}
+    
+   
+} 
+
