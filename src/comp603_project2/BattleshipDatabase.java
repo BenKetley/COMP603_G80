@@ -9,53 +9,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BattleshipDatabase {
+
     private BattleshipDataBaseManager dbManager;
     private Connection conn;
 
     public BattleshipDatabase() {
         dbManager = new BattleshipDataBaseManager();
         conn = dbManager.getConnection();
-        
+
         if (conn == null) {
             throw new IllegalStateException("Failed to establish database connection.");
         }
-
         createTables(); // Call to create tables upon initialization
     }
 
-    private void createTables() {
+    private void createTables() { //creates tables upon starting code
         createActionsTable();
         createGameResultsTable();
     }
 
-    private void createActionsTable() {
-        try (Statement stmt = conn.createStatement()) {
-            // Create BATTLESHIPACTIONS table if it doesn't exist
-            stmt.execute("CREATE TABLE BATTLESHIPACTIONS (" +
-                    "ID," +
-                    "ActionType VARCHAR(50), " +
-                    "Coordinates VARCHAR(10), " +
-                    "Result VARCHAR(10), " +
-                    "Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
+    private void createActionsTable() { // Create BATTLESHIPACTIONS table if it doesn't exist
+        try ( Statement stmt = conn.createStatement()) {     
+            stmt.execute("CREATE TABLE BATTLESHIPACTIONS ("
+                    + "ID,"
+                    + "ActionType VARCHAR(50), "
+                    + "Coordinates VARCHAR(10), "
+                    + "Result VARCHAR(10), "
+                    + "Timestamp)");
         } catch (SQLException e) {
             System.out.println("Error creating table BATTLESHIPACTIONS: " + e.getMessage());
         }
     }
 
-    private void createGameResultsTable() {
-        try (Statement stmt = conn.createStatement()) {
-            // Create GAMERESULTS table if it doesn't exist
-            stmt.execute("CREATE TABLE GAMERESULTS (" +
-                    "ID, " +
-                    "Outcome VARCHAR(50), " +
-                    "Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
+    private void createGameResultsTable() { // Create GAMERESULTS table if it doesn't exist
+        try ( Statement stmt = conn.createStatement()) {
+            stmt.execute("CREATE TABLE GAMERESULTS ("
+                    + "ID, "
+                    + "Outcome VARCHAR(50), "
+                    + "Timestamp)");
         } catch (SQLException e) {
             System.out.println("Error creating table GAMERESULTS: " + e.getMessage());
         }
     }
 
-    public void logMove(String actionType, String coordinates, char result) {
-        try (PreparedStatement stmt = conn.prepareStatement(
+    public void logMove(String actionType, String coordinates, char result) {  //records moves made by player
+        try ( PreparedStatement stmt = conn.prepareStatement(
                 "INSERT INTO BATTLESHIPACTIONS (ActionType, Coordinates, Result) VALUES (?, ?, ?)")) {
             stmt.setString(1, actionType);
             stmt.setString(2, coordinates);
@@ -66,8 +64,8 @@ public class BattleshipDatabase {
         }
     }
 
-    public void logGameResult(String outcome) {
-        try (PreparedStatement stmt = conn.prepareStatement(
+    public void logGameResult(String outcome) { //records game results
+        try ( PreparedStatement stmt = conn.prepareStatement(
                 "INSERT INTO GAMERESULTS (Outcome) VALUES (?)")) {
             stmt.setString(1, outcome);
             stmt.executeUpdate();
@@ -75,22 +73,21 @@ public class BattleshipDatabase {
             System.out.println("Error logging game result: " + e.getMessage());
         }
     }
-    
-    public List<String> getGameResults() {
-    List<String> results = new ArrayList<>();
-    try (PreparedStatement stmt = conn.prepareStatement("SELECT Outcome, Timestamp");
-         ResultSet rs = stmt.executeQuery()) {
-        
-        while (rs.next()) {
-            String outcome = rs.getString("Outcome");
-            String timestamp = rs.getString("Timestamp");
-            results.add("Outcome: " + outcome + " at " + timestamp);
+
+    public List<String> getGameResults() { //a function for getting game results so it can be displayed
+        List<String> results = new ArrayList<>();
+        String query = "SELECT Outcome FROM GameResults";
+
+        try ( PreparedStatement stmt = conn.prepareStatement(query);  ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                results.add(rs.getString("Outcome"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving game results: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Error retrieving game results: " + e.getMessage());
+
+        return results;
     }
-    return results;
-}
 
     public void closeConnection() {
         dbManager.closeConnections();
