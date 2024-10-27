@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package comp603_project2;
 
 /**
@@ -14,14 +10,14 @@ import java.sql.SQLException;
 
 public class BattleshipDataBaseManager {
 
-    private static final String USER_NAME = "";
-    private static final String PASSWORD = "";
-    private static final String URL = "jdbc:derby:BattleShipDB;create=true";
+    private static final String USER_NAME = "";//Database Username
+    private static final String PASSWORD = "";//Database Password
+    private static final String URL = "jdbc:derby:BattleShipDB;create=true";//url of embeded database
 
     Connection conn;
 
     public BattleshipDataBaseManager() {
-        establishConnection();
+        establishConnection(); //creates connection
     }
 
     public static void main(String[] args) {
@@ -31,13 +27,13 @@ public class BattleshipDataBaseManager {
 
     public Connection getConnection() {
         if (conn == null) {
-            System.out.println("Connection not established.");
+            System.out.println("Connection not established."); //error if connection isnt established 
         }
         return this.conn;
     }
 
-    // Establish connection
-    public void establishConnection() {
+
+    public void establishConnection() { // Establish connection
         if (this.conn == null) {
             try {
                 Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -50,8 +46,8 @@ public class BattleshipDataBaseManager {
             }
         }
     }
-
-    public void closeConnections() {
+   
+    public void closeConnections() { //close connection
         if (conn != null) {
             try {
                 conn.close();
@@ -62,4 +58,3 @@ public class BattleshipDataBaseManager {
         }
     }
 }
-
