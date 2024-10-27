@@ -25,6 +25,7 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
         int boardSize = 9;
         int shipCount = 10;
         int round = 1;
+        private int undetectedShipCount =10;
         private int unplacedShipCount = 10;
         String coordinates;
         boolean game = true;
@@ -147,7 +148,12 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
     public void gameUpdator() {
         // Updates the game in the GUI
             round = round+1;
-            InstructionText.setText("Round: " + round + " ATTACK!");
+            if (undetectedShipCount ==0){
+                InstructionText.setText("YOU WIN!!!");
+                
+            }
+            
+            InstructionText.setText("Round: " + round + " Ships Left: "+ undetectedShipCount);
         for (char col = 'A'; col <= 'I'; col++) { // for loop checks and updates conditions of all grid positions
             for (int row = 1; row <= 9; row++) {
                 String coords = col + Integer.toString(row);
@@ -167,6 +173,7 @@ public class COMP604_GUI_Form extends javax.swing.JFrame {
                 }
             }
         }
+        
     }
         
        
@@ -225,11 +232,8 @@ private void displayGameResults() {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        label2 = new java.awt.Label();
-        label7 = new java.awt.Label();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         panel5 = new java.awt.Panel();
         panel6 = new java.awt.Panel();
         label5 = new java.awt.Label();
@@ -444,21 +448,12 @@ private void displayGameResults() {
         InstructionText = new javax.swing.JTextField();
         ExitButton = new javax.swing.JButton();
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        jPopupMenu1.setBackground(new java.awt.Color(0, 0, 102));
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
-        label2.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
-        label2.setForeground(new java.awt.Color(255, 255, 255));
-        label2.setText("BATTLE SHIPS EXTREME!");
-
-        label7.setAlignment(java.awt.Label.CENTER);
-        label7.setFont(new java.awt.Font("Dialog", 1, 32)); // NOI18N
-        label7.setForeground(new java.awt.Color(255, 255, 255));
-        label7.setMinimumSize(new java.awt.Dimension(400, 51));
-        label7.setText("BATTLE SHIPS EXTREME!");
+        jMenuItem1.setBackground(new java.awt.Color(0, 0, 102));
+        jMenuItem1.setForeground(new java.awt.Color(255, 255, 255));
+        jMenuItem1.setText("YOU WIN!!!");
+        jPopupMenu1.add(jMenuItem1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 102));
@@ -2878,6 +2873,9 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA1.setBackground(Color.RED);
+            undetectedShipCount --;
+            InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
+            
         }
         
         gameUpdator();
@@ -2902,6 +2900,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2924,6 +2924,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2946,6 +2948,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2968,6 +2972,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -2990,6 +2996,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3012,6 +3020,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3034,6 +3044,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3056,6 +3068,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI1.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3077,6 +3091,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3098,6 +3114,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3119,6 +3137,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3140,6 +3160,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3161,6 +3183,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3182,6 +3206,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3203,6 +3229,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3224,6 +3252,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3245,6 +3275,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI2.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3266,6 +3298,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3287,6 +3321,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3308,6 +3344,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3329,6 +3367,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3350,6 +3390,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3371,6 +3413,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3392,6 +3436,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3413,6 +3459,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3434,6 +3482,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI3.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3455,6 +3505,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3476,6 +3528,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3497,6 +3551,9 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
+            
         }
         gameUpdator();
         }
@@ -3518,6 +3575,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3539,6 +3598,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3560,6 +3621,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3581,6 +3644,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3602,6 +3667,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3623,6 +3690,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI4.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3644,6 +3713,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3665,6 +3736,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3686,6 +3759,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3707,6 +3782,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3728,6 +3805,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3749,6 +3828,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3770,6 +3851,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3791,6 +3874,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3812,6 +3897,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI5.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3833,6 +3920,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3854,6 +3943,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3875,6 +3966,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3896,6 +3989,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3917,6 +4012,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3938,6 +4035,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3959,6 +4058,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -3980,6 +4081,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4001,6 +4104,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI6.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4022,6 +4127,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4043,6 +4150,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4064,6 +4173,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4085,6 +4196,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4106,6 +4219,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4127,6 +4242,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4148,6 +4265,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4169,6 +4288,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4190,6 +4311,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI7.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4211,6 +4334,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4232,6 +4357,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4253,6 +4380,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4274,6 +4403,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4295,6 +4426,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4316,6 +4449,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4337,6 +4472,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4358,6 +4495,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4379,6 +4518,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI8.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4400,6 +4541,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayA9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4421,6 +4564,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayB9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4442,6 +4587,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayC9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4463,6 +4610,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayD9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4484,6 +4633,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayE9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4505,6 +4656,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayF9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4526,6 +4679,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayG9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4547,6 +4702,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayH9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -4568,6 +4725,8 @@ private void displayGameResults() {
         }
         else if (c == 'X'){
             AwayI9.setBackground(Color.RED);
+            undetectedShipCount --;
+                    InstructionText.setText("Round: " + round + " Ships Left:"+ undetectedShipCount);
         }
         gameUpdator();
         }
@@ -6029,12 +6188,10 @@ private void displayGameResults() {
     private javax.swing.JButton HomeI8;
     private javax.swing.JButton HomeI9;
     private javax.swing.JTextField InstructionText;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JSeparator jSeparator1;
-    private java.awt.Label label2;
     private java.awt.Label label23;
     private java.awt.Label label24;
     private java.awt.Label label25;
@@ -6075,7 +6232,6 @@ private void displayGameResults() {
     private java.awt.Label label61;
     private java.awt.Label label62;
     private java.awt.Label label63;
-    private java.awt.Label label7;
     private java.awt.Label label8;
     private java.awt.Panel panel3;
     private java.awt.Panel panel5;
